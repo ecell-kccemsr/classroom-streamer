@@ -37,7 +37,26 @@
                 &times;
               </button>
             </div>
-            <video id="videoPlayer" autoplay playsinline class="w-full"></video>
+            <video
+              id="videoPlayer"
+              autoplay
+              playsinline
+              class="w-full mb-4"
+            ></video>
+            <div class="flex justify-center gap-4">
+              <button
+                id="start-record-btn"
+                class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Start Local Recording
+              </button>
+              <button
+                id="stop-record-btn"
+                class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 hidden"
+              >
+                Stop Local Recording
+              </button>
+            </div>
           </div>
         </div>
       </div>
