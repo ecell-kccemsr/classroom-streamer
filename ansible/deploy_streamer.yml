@@ -1,0 +1,75 @@
+---
+- name: Deploy Classroom Streamer
+  hosts: classroom_pcs
+  become: yes
+  vars:
+    docker_compose_version: "2.20.2"
+
+  tasks:
+    - name: Install required system packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python3-pip
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Install Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/v{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+        dest: /usr/local/bin/docker-compose
+        mode: "0755"
+
+    - name: Create streamer directory
+      file:
+        path: /opt/classroom-streamer
+        state: directory
+        mode: "0755"
+
+    - name: Copy streamer files
+      copy:
+        src: "{{ item.src }}"
+        dest: "/opt/classroom-streamer/{{ item.dest }}"
+      loop:
+        - { src: "../streamer/Dockerfile", dest: "Dockerfile" }
+        - { src: "../streamer/requirements.txt", dest: "requirements.txt" }
+        - { src: "../streamer/streamer.py", dest: "streamer.py" }
+
+    - name: Create .env file
+      template:
+        src: env.j2
+        dest: /opt/classroom-streamer/.env
+      vars:
+        livekit_url: "{{ livekit_url }}"
+        api_key: "{{ api_key }}"
+        api_secret: "{{ api_secret }}"
+        room_name: "classroom{{ inventory_hostname | regex_replace('[^0-9]', '') }}"
+        rtsp_url: "{{ rtsp_url }}"
+        mic_device: "{{ mic_device }}"
+
+    - name: Build and start streamer container
+      docker_compose:
+        project_src: /opt/classroom-streamer
+        build: yes
+        state: present
+        restarted: yes
