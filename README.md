@@ -33,6 +33,7 @@ graph TD
     B -- Forwards Media (SRTP) --> C
     C -- Sends Recording Command --> D
     D -- Controls Recording --> B
+```
 
 ## Key Features
 
