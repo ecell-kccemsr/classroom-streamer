@@ -2,7 +2,37 @@
 
 A professional-grade, reliable, and scalable real-time video monitoring system for multiple classrooms, built on LiveKit WebRTC infrastructure. This system enables educational institutions to efficiently monitor and record classroom activities with minimal latency and high reliability.
 
-![Architecture Diagram](docs/architecture.png)
+```mermaid
+graph TD
+    subgraph "Server Infrastructure (Docker Compose)"
+        direction LR
+        B[LiveKit SFU Media Server]
+        D[Flask Token/Recording Server]
+        E[Nginx Web Viewer]
+    end
+
+    subgraph "Classroom PC"
+        A[Python Streamer Script]
+        A_CAM[IP Camera]
+        A_MIC[Microphone]
+    end
+
+    subgraph "Principal's PC"
+        C[Web Browser]
+    end
+
+    A_CAM -- RTSP Video --> A
+    A_MIC -- PulseAudio --> A
+    A -- Publishes Stream --> B
+
+    C -- Loads Web Page --> E
+    C -- Requests Token --> D
+    D -- Returns Token --> C
+    C -- Subscribes to Stream --> B
+
+    B -- Forwards Media (SRTP) --> C
+    C -- Sends Recording Command --> D
+    D -- Controls Recording --> B
 
 ## Key Features
 
