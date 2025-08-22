@@ -20,14 +20,17 @@ For authorized users and ecell team members, you can report bugs and issues thro
 ### Required Information for Bug Reports
 
 1. **Title**: A clear, concise description of the issue
+
    - Example: "Classroom 101 stream freezes after 2 hours of continuous viewing"
 
 2. **Problem Description**:
+
    - What happened?
    - What did you expect to happen?
    - How critical is this issue?
 
 3. **Steps to Reproduce**:
+
    - Detailed, numbered steps that others can follow
    - Any specific conditions or setup required
    - Example input values or actions
@@ -47,12 +50,14 @@ Description:
 The video stream from Classroom 101 freezes after approximately 2 hours of continuous viewing. The connection status stays "LIVE" but no new frames are received.
 
 Steps to Reproduce:
+
 1. Connect to Classroom 101 stream
 2. Leave the stream running
 3. Monitor for ~2 hours
 4. Observe video freeze while status remains "LIVE"
 
 Environment:
+
 - Server: Ubuntu 20.04 LTS
 - Classroom PC: Ubuntu 20.04 Desktop
 - Browser: Chrome 120.0
