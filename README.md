@@ -135,7 +135,7 @@ graph LR
 ### Step 1: Clone the Repository
 
 \`\`\`bash
-git clone <your_repo_url>
+git clone https://github.com/ecell-kccemsr/classroom-streamer.git
 cd classroom-streaming
 \`\`\`
 
